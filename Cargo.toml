@@ -1,0 +1,7 @@
+[package]
+name = "crust"
+version = "0.1.0"
+authors = ["Jacob M. Slone <jslone1993@gmail.com>"]
+
+[dependencies]
+
