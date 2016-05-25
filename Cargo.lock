@@ -1,4 +1,11 @@
 [root]
 name = "crust"
 version = "0.1.0"
+dependencies = [
+ "rlibc 1.0.0",
+]
+
+[[package]]
+name = "rlibc"
+version = "1.0.0"
 
