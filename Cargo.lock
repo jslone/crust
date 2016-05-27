@@ -2,10 +2,19 @@
 name = "crust"
 version = "0.1.0"
 dependencies = [
- "rlibc 1.0.0",
+ "libc 0.1.0",
+ "rust-libcore 0.0.3 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
-name = "rlibc"
-version = "1.0.0"
+name = "libc"
+version = "0.1.0"
+dependencies = [
+ "rust-libcore 0.0.3 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "rust-libcore"
+version = "0.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
