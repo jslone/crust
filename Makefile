@@ -5,10 +5,15 @@ AR = arm-none-eabi-ar
 LD = arm-none-eabi-ld
 OBJCOPY = arm-none-eabi-objcopy
 
-CFLAGS = -O2 -mfpu=vfp -mfloat-abi=hard -march=armv6zk -mtune=arm1176jzf-s
+CFLAGS = -O2 -mfpu=vfp -mfloat-abi=hard -march=armv6zk -mtune=arm1176jzf-s \
+				 -nostartfiles -nodefaultlibs -nostdlib \
+				 -Wall -Werror -Wno-unused -Wno-strict-aliasing \
+				 -ffunction-sections -fdata-sections \
+				 -fno-unwind-tables -fno-exceptions -fno-threadsafe-statics \
+				 -fno-rtti -fno-use-cxa-atexit
 
 arch ?= arm
-target ?= $(arch)-unknown-linux-gnueabihf
+target ?= rpi
 
 kernel := build/$(arch)/kernel.elf
 img := build/$(arch)/kernel.img
@@ -36,7 +41,7 @@ $(img): $(kernel)
 
 $(kernel): cargo $(assembly_object_files) $(linker_layout)
 	@mkdir -p $(shell dirname $@)
-	@$(LD) -n --gc-sections -T $(linker_layout) -o $(kernel) $(assembly_object_files) $(rust_kernel)
+	@$(CC) -Wl,-n,--gc-sections,-T,$(linker_layout) $(CFLAGS) -o $(kernel) $(assembly_object_files) $(rust_kernel) -lnosys -lgcc
 
 # recompile rust every time, cargo does a better job caching builds
 cargo:
@@ -44,5 +49,5 @@ cargo:
 
 build/$(arch)/obj/%.o: src/arch/$(arch)/%.S
 	@mkdir -p $(shell dirname $@)
-	@$(CC) $(CFLAGS) -nostartfiles -c -o $@ $<
+	@$(CC) $(CFLAGS) -c -o $@ $<
 
